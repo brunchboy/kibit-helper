@@ -6,7 +6,7 @@
 ;; Author: Jonas Enlund
 ;;         James Elliott <james@brunchboy.com>
 ;; URL: http://www.github.com/brunchboy/kibit-helper
-;; Version: 0.0.1
+;; Version: 0.1.0
 ;; Package-Requires: ((s "0.8") (emacs "24"))
 ;; Keywords: languages, clojure, kibit
 
