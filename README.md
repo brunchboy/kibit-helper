@@ -6,9 +6,10 @@ A set of Emacs Lisp functions to make it very easy to work with [Kibit](https://
 
 Available as a package in melpa.org
 
-    (add-to-list 'package-archives
-                 '("melpa" . "http://melpa.org/packages/") t)
-
+```lisp
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa.org/packages/") t)
+```
     M-x package-install kibit-helper
 
 ## Usage
@@ -22,7 +23,9 @@ You will likely want to bind the last function to <kbd>C-x</kbd>
 function (conventionally <kbd>C-x</kbd> <kbd>\`</kbd>) as you walk
 through the suggestions made by Kibit:
 
-    (global-set-key (kbd "C-x C-`") 'kibit-accept-proposed-change)
+```lisp
+(global-set-key (kbd "C-x C-`") 'kibit-accept-proposed-change)
+```
 
 ## Known limitations
 
