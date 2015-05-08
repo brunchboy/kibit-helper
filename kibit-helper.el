@@ -6,7 +6,7 @@
 ;; Author: Jonas Enlund
 ;;         James Elliott <james@brunchboy.com>
 ;; URL: http://www.github.com/brunchboy/kibit-helper
-;; Version: 0.1.0
+;; Version: 0.1.1
 ;; Package-Requires: ((s "0.8") (emacs "24"))
 ;; Keywords: languages, clojure, kibit
 
@@ -77,6 +77,24 @@
              '(kibit "At \\([^:]+\\):\\([[:digit:]]+\\):" 1 2 nil 2))
 (add-to-list 'compilation-error-regexp-alist 'kibit)
 
+;; Low-level function to create a compilation buffer with an
+;; appropriate name, generating Kibit suggestions for either the
+;; entire project associated with the current directory, or a specific
+;; file, if supplied.
+(defun kibit-compilation-do (&optional filename)
+  (save-some-buffers (not compilation-ask-about-save)
+                     (when (boundp 'compilation-save-buffers-predicate)
+                       compilation-save-buffers-predicate))
+  (let ((this-dir default-directory)
+        (command (concat "lein kibit"
+                         (when filename (concat " " (shell-quote-argument filename))))))
+    (with-current-buffer (get-buffer-create "*Kibit Suggestions*")
+      (setq default-directory this-dir)
+      (compilation-start
+       command
+       'compilation-mode
+       (lambda (m) (buffer-name))))))
+
 ;; A convenient command to run "lein kibit" in the project to which
 ;; the current emacs buffer belongs to.
 ;;;###autoload
@@ -84,14 +102,14 @@
   "Run kibit on the current Leiningen project.
 Display the results in a hyperlinked *compilation* buffer."
   (interactive)
-  (compile "lein kibit"))
+  (kibit-compilation-do))
   
 ;;;###autoload
 (defun kibit-current-file ()
   "Run kibit on the current file of a Leiningen project.
 Display the results in a hyperlinked *compilation* buffer."
   (interactive)
-  (compile (concat "lein kibit " buffer-file-name)))
+  (kibit-compilation-do buffer-file-name))
 
 (require 's)
 
